@@ -2,7 +2,7 @@
   "name": "instant-mongo",
   "displayName": "Instant Mongo",
   "description": "Creates a temporary Mongo DB, spin it up to quickly test your awesome code.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "hansvn",
   "license": "SEE LICENSE",
   "bugs": {
