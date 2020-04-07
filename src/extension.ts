@@ -5,6 +5,7 @@ import { writeSync as copyToClipboard } from 'clipboardy';
 import { MongoMemoryServer } from 'mongodb-memory-server-core';
 import { MongoMemoryInstancePropT } from 'mongodb-memory-server-core/lib/types';
 import { StatusBar } from './status-bar';
+import { VsCodeHelper } from './vscode_helper';
 
 enum COMMANDS {
 	START = 'instant-mongo.start',
@@ -45,15 +46,13 @@ export function deactivate() {
 	statusBar.dispose();
 }
 
-function showInfoMessage(message: string): void {
-	vscode.window.showInformationMessage(message);
-}
-
 function updateStatusText(status: string, tooltip?: string): void {
 	statusBar.update(status, tooltip);
 }
 
 async function startServer() {
+	updateStatusText('$(sync~spin) Starting Mongod');
+
 	if (!mongoServer) {
 		const configuration = vscode.workspace.getConfiguration('instantMongo');
 		mongoServer = new MongoMemoryServer({
@@ -76,7 +75,7 @@ async function startServer() {
 	// update status bar
 	updateStatusText('$(database) Mongod Running', 'mongod options');
 	// Display a message box to the user
-	showInfoMessage(`Database is running on port ${port}`);
+	VsCodeHelper.showInfoMessage(`Database is running on port ${port}`);
 }
 
 async function stopServer() {
@@ -88,21 +87,25 @@ async function stopServer() {
 	}
 
 	updateStatusText('$(close) Mongod Stopped', 'click to open actions menu');
-	showInfoMessage(`Database stopped`);
+	VsCodeHelper.showInfoMessage(`Database stopped`);
 }
 
 function printDbInfo(): void {
-	let infoMessage: string = 'Database is not running';
 	if (mongoServer) {
 		const dbInfo = mongoServer.getInstanceInfo();
 		if (dbInfo) {
-			infoMessage = `port: ${dbInfo.port},\\ndbName: ${dbInfo.dbName},\\nip: ${dbInfo.ip},\\nstorageEngine: ${dbInfo.storageEngine},\\nreplSet: ${dbInfo.replSet},\\ndbPath: ${dbInfo.dbPath},\\nuri: ${dbInfo.uri}`;
+			VsCodeHelper.openTextInEditor(`{
+				"port": ${dbInfo.port},
+				"dbName": "${dbInfo.dbName}",
+				"ip": "${dbInfo.ip}",
+				"storageEngine": "${dbInfo.storageEngine}",
+				"replSet": "${dbInfo.replSet}",
+				"dbPath": "${dbInfo.dbPath}",
+				"uri": "${dbInfo.uri}",
+				"mongod_pid": ${dbInfo.childProcess?.pid}
+			}`);
 		}
 	}
-
-	vscode.window.activeTerminal?.show();
-	vscode.window.activeTerminal?.sendText(`echo "\\nMongod Info:\\n\\n${infoMessage}\\n\\n"`);
-	showInfoMessage('Info printed to terminal');
 }
 
 async function showMenu() {
@@ -128,7 +131,7 @@ async function showMenu() {
 	menuItems.push({
 		id: COMMANDS.SHOW_INFO,
 		label: 'Show Info',
-		detail: 'Prints info from running instance in the terminal'
+		detail: 'Prints info from running instance in an editor window'
 	})
 
 	const result = await vscode.window.showQuickPick(menuItems);
@@ -142,7 +145,7 @@ async function showMenu() {
 				break;
 			case COMMANDS.COPY_URI:
 				copyToClipboard(`${result.detail}`);
-				showInfoMessage('Database URI copied to clipboard');
+				VsCodeHelper.showInfoMessage('Database URI copied to clipboard');
 				break;
 			case COMMANDS.SHOW_INFO:
 				printDbInfo();
