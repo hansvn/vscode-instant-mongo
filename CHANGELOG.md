@@ -4,7 +4,11 @@ All notable changes to the "instant-mongo" extension will be documented in this 
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
-## [1.0.0] - 2020-04-23
+## [1.0.1] - 2020-04-24
+
+- Added package keyword `Explorer`
+
+## [1.0.0] - 2020-04-24
 
 - Added Database Explorer
 - Automatically shows the running Memory Database in the Explorer
