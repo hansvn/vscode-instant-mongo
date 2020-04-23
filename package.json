@@ -25,15 +25,107 @@
     "Instant",
     "Development"
   ],
-  "icon": "images/logo.png",
+  "icon": "resources/images/logo.png",
   "activationEvents": [
+    "onView:mongoExplorer",
     "onCommand:instant-mongo.start",
     "onCommand:instant-mongo.stop",
     "onCommand:instant-mongo.show_menu"
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "mongodb-explorer",
+          "title": "MongoDB Explorer",
+          "icon": "resources/icons/mongoexplorer_white.svg"
+        }
+      ]
+    },
+    "views": {
+      "mongodb-explorer": [
+        {
+          "id": "mongoExplorer",
+          "name": "Database Explorer"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "mongoExplorer",
+        "contents": "No database connections found.\nEither start a Mongod server in memory\n[Start DB Server](command:instant-mongo.start)\nor add a database connection in vscode settings.json\n[Add Connection](command:mongoExplorer.addDbConnection)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "instant-mongo.start",
+          "when": "view == mongoExplorer"
+        },
+        {
+          "command": "mongoExplorer.addDbConnection",
+          "when": "view == mongoExplorer"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "mongoExplorer.refreshInspector",
+          "when": "view == mongoExplorer && viewItem == inspector",
+          "group": "inline"
+        },
+        {
+          "command": "mongoExplorer.addDatabase",
+          "when": "view == mongoExplorer && viewItem == databases"
+        },
+        {
+          "command": "mongoExplorer.addCollection",
+          "when": "view == mongoExplorer && viewItem == database"
+        },
+        {
+          "command": "mongoExplorer.insertDocument",
+          "when": "view == mongoExplorer && viewItem == collection"
+        },
+        {
+          "command": "mongoExplorer.openDocument",
+          "when": "view == mongoExplorer && viewItem == document",
+          "group": "inline"
+        }
+      ]
+    },
     "commands": [
+      {
+        "command": "mongoExplorer.addDbConnection",
+        "title": "Add Database Connection"
+      },
+      {
+        "command": "mongoExplorer.refreshInspector",
+        "title": "Refresh",
+        "icon": {
+          "light": "resources/icons/light/command_refresh.svg",
+          "dark": "resources/icons/dark/command_refresh.svg"
+        }
+      },
+      {
+        "command": "mongoExplorer.addDatabase",
+        "title": "Add Database"
+      },
+      {
+        "command": "mongoExplorer.addCollection",
+        "title": "Add Collection"
+      },
+      {
+        "command": "mongoExplorer.insertDocument",
+        "title": "Insert Document"
+      },
+      {
+        "command": "mongoExplorer.openDocument",
+        "title": "View Document",
+        "icon": {
+          "light": "resources/icons/light/command_view.svg",
+          "dark": "resources/icons/dark/command_view.svg"
+        }
+      },
       {
         "command": "instant-mongo.start",
         "title": "Instant Mongo: Start DB Server"
@@ -89,6 +181,25 @@
           "type": "string[]",
           "default": null,
           "description": "any additional command line arguments for `mongod` `mongod` (ex. ['--notablescan'])"
+        },
+        "instantMongo.connections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "title": "Connection objects",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the database connection"
+              },
+              "uri": {
+                "type": "string",
+                "description": "The connection URI"
+              }
+            }
+          },
+          "default": [],
+          "description": "Database Connections to list in the explorer"
         }
       }
     }
@@ -99,16 +210,17 @@
     "lint": "eslint src --ext ts",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
-    "test": "node ./out/test/runTest.js"
+    "test": "node ./out/tests/runTests.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.43.0",
     "@types/glob": "^7.1.1",
     "@types/mocha": "^7.0.2",
+    "@types/mongodb": "^3.5.5",
     "@types/node": "^13.11.0",
-    "eslint": "^6.8.0",
-    "@typescript-eslint/parser": "^2.26.0",
+    "@types/vscode": "^1.43.0",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
+    "@typescript-eslint/parser": "^2.26.0",
+    "eslint": "^6.8.0",
     "glob": "^7.1.6",
     "mocha": "^7.1.1",
     "typescript": "^3.8.3",
@@ -116,6 +228,8 @@
   },
   "dependencies": {
     "clipboardy": "^2.3.0",
-    "mongodb-memory-server-core": "^6.5.2"
+    "mongodb": "^3.5.5",
+    "mongodb-memory-server-core": "^6.5.2",
+    "mongodb-topology": "0.0.23"
   }
 }
