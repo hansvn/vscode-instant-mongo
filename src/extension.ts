@@ -17,6 +17,11 @@ export function activate(context: vscode.ExtensionContext) {
 				uri: await MongoServer.getServer?.getUri() || '',
 				name: 'Memory DB'
 			});
+		} else if (status === SERVER_STATUS.STOPPED) {
+			explorer.removeDbConnection({
+				uri: await MongoServer.getServer?.getUri() || '',
+				name: 'Memory DB'
+			});
 		}
 	});
 }

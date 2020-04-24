@@ -10,8 +10,11 @@ export enum COMMAND_NAMES {
     ADD_DB_CONN = 'mongoExplorer.addDbConnection',
     REFRESH = 'mongoExplorer.refreshInspector',
     ADD_DATABASE = 'mongoExplorer.addDatabase',
+    DROP_DATABASE = 'mongoExplorer.dropDatabase',
     ADD_COLLECTION = 'mongoExplorer.addCollection',
+    DROP_COLLECTION = 'mongoExplorer.dropCollection',
     INSERT_DOCUMENT = 'mongoExplorer.insertDocument',
+    DELETE_DOCUMENT = 'mongoExplorer.deleteDocument',
     OPEN_DOCUMENT = 'mongoExplorer.openDocument'
 }
 
@@ -46,6 +49,13 @@ export class MongoExplorer {
     public addDbConnection(connection: DBConnection): void {
         this.runtimeDbConnections.push(connection);
         this.treeProvider.addDbConnection(connection);
+    }
+
+    public removeDbConnection(connection: DBConnection): void {
+        this.runtimeDbConnections = this.runtimeDbConnections.filter(conn => {
+            return !(conn.name === connection.name && conn.uri == connection.uri);
+        });
+        this.treeProvider.removeDbConnection(connection);
     }
 
     private fireContentChanged(): void {
@@ -165,6 +175,17 @@ export class MongoExplorer {
                 vscode.window.showErrorMessage('Could not create the database');
             }
         });
+        //mongoExplorer.dropDatabase
+        vscode.commands.registerCommand(COMMAND_NAMES.DROP_DATABASE, async (treeItem: InspectorTreeItem) => {
+            try {
+                await (<InspectorElement>treeItem.item).commands.dropDatabase();
+                this.fireContentChanged();
+                vscode.window.showInformationMessage(`Dropped the Database`);
+            } catch (error) {
+                vscode.window.showErrorMessage(`Could not drop the Database`);
+            }
+
+        });
         //mongoExplorer.addCollection
         vscode.commands.registerCommand(COMMAND_NAMES.ADD_COLLECTION, async (treeItem: InspectorTreeItem) => {
             const inputPlaceholder: string = '<collection name>';
@@ -185,6 +206,16 @@ export class MongoExplorer {
                 vscode.window.showInformationMessage(`Collection '${name}' added`);
             } catch (error) {
                 vscode.window.showErrorMessage(`Could not create collection '${name}'`);
+            }
+        });
+        //mongoExplorer.dropCollection
+        vscode.commands.registerCommand(COMMAND_NAMES.DROP_COLLECTION, async (treeItem: InspectorTreeItem) => {
+            try {
+                await (<InspectorElement>treeItem.item).commands.dropCollection();
+                this.fireContentChanged();
+                vscode.window.showInformationMessage(`Collection deleted`);
+            } catch (error) {
+                vscode.window.showErrorMessage(`Could not drop the collection`);
             }
         });
 
@@ -213,7 +244,6 @@ export class MongoExplorer {
             } catch (error) {
                 vscode.window.showErrorMessage(`Could not insert the document`);
             }
-
         });
 
         // open document
@@ -223,6 +253,18 @@ export class MongoExplorer {
                 const document = await item.commands.findOne();
                 VsCodeHelpers.openFormattedTextInEditor(JSON.stringify(document));
             }
+        });
+
+        //mongoExplorer.deleteDocument
+        vscode.commands.registerCommand(COMMAND_NAMES.DELETE_DOCUMENT, async (treeItem: InspectorTreeItem) => {
+            try {
+                await (<InspectorElement>treeItem.item).commands.deleteOne();
+                this.fireContentChanged();
+                vscode.window.showInformationMessage(`Document deleted`);
+            } catch (error) {
+                vscode.window.showErrorMessage(`Could not delete the document`);
+            }
+
         });
     }
 

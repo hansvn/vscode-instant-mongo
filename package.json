@@ -1,7 +1,7 @@
 {
   "name": "instant-mongo",
   "displayName": "Instant Mongo",
-  "description": "Creates a temporary Mongo DB, spin it up to quickly test your awesome code.",
+  "description": "Creates a temporary Mongo DB and adds a MongoDB explorer to the side bar.",
   "version": "1.0.1",
   "publisher": "hansvn",
   "license": "SEE LICENSE",
@@ -77,20 +77,38 @@
         },
         {
           "command": "mongoExplorer.addDatabase",
-          "when": "view == mongoExplorer && viewItem == databases"
+          "when": "view == mongoExplorer && viewItem == databases",
+          "group": "1_actions"
+        },
+        {
+          "command": "mongoExplorer.dropDatabase",
+          "when": "view == mongoExplorer && viewItem == database",
+          "group": "2_actions"
         },
         {
           "command": "mongoExplorer.addCollection",
-          "when": "view == mongoExplorer && viewItem == database"
+          "when": "view == mongoExplorer && viewItem == database",
+          "group": "1_actions"
+        },
+        {
+          "command": "mongoExplorer.dropCollection",
+          "when": "view == mongoExplorer && viewItem == collection",
+          "group": "2_actions"
         },
         {
           "command": "mongoExplorer.insertDocument",
-          "when": "view == mongoExplorer && viewItem == collection"
+          "when": "view == mongoExplorer && viewItem == collection",
+          "group": "1_actions"
         },
         {
           "command": "mongoExplorer.openDocument",
           "when": "view == mongoExplorer && viewItem == document",
           "group": "inline"
+        },
+        {
+          "command": "mongoExplorer.deleteDocument",
+          "when": "view == mongoExplorer && viewItem == document",
+          "group": "1_actions"
         }
       ]
     },
@@ -112,8 +130,16 @@
         "title": "Add Database"
       },
       {
+        "command": "mongoExplorer.dropDatabase",
+        "title": "Drop Database"
+      },
+      {
         "command": "mongoExplorer.addCollection",
         "title": "Add Collection"
+      },
+      {
+        "command": "mongoExplorer.dropCollection",
+        "title": "Drop Collection"
       },
       {
         "command": "mongoExplorer.insertDocument",
@@ -126,6 +152,10 @@
           "light": "resources/icons/light/command_view.svg",
           "dark": "resources/icons/dark/command_view.svg"
         }
+      },
+      {
+        "command": "mongoExplorer.deleteDocument",
+        "title": "Delete Document"
       },
       {
         "command": "instant-mongo.start",

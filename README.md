@@ -1,10 +1,7 @@
-# instant-mongo README
+# Instant Mongo: Memory Database and Explorer
 
 The Instant Mongo extension eliminates all the time consuming and cumbersome steps of installing, configuring and running a MongoDB database.
-It also adds a Database Explorer to VS Code so you can immediately explore the structures and contents of the database. The Explorer supports commands which allow you to create databases, collections and insert documents.
-Just start your devving session: quickly run a database without any setup and focus on the important matters.
-
-This extension is a wrapper for [mongodb-memory-server-core](https://github.com/nodkz/mongodb-memory-server) so you can spin up a database with one command (or 2 clicks).
+It also adds a Database Explorer to VS Code so you can immediately explore the structures and contents of the database. The Explorer supports basic commands which allow you to create databases, collections and insert documents.
 
 ## Installation
 
@@ -13,9 +10,17 @@ You can also navigate to the Database Explorer view and start the server or go t
 
 ## Features
 
-Creates an in-memory Mongo Database for quick developing. When the server is stopped the database is deleted so it doesn't take up any unnecessary space on your system.
+Creates an in-memory Mongo Database for quick developing. When the server is stopped the database is deleted so it doesn't take up any unnecessary space on your system. When clicking on the server status in VS Code Status Bar, a menu with actions regarding the current running Database will be presented.
+![Running Database actions](https://raw.githubusercontent.com/hansvn/vscode-instant-mongo/master/resources/images/db_actions.png)
 
 Adds a Database Explorer to the VS Code Activity Bar, where you can open the running memory database in the Side Bar. You can also add your own database URIs to the connections array in the settings and list them in the Explorer.
+
+![Instant DB Server and DB Explorer](https://raw.githubusercontent.com/hansvn/vscode-instant-mongo/master/resources/images/explorer_server.gif)
+
+The Database Explorer includes basic commands to create/drop databases, collections and documents.
+![Add Database Command](https://raw.githubusercontent.com/hansvn/vscode-instant-mongo/master/resources/images/command_add_db.gif)
+![Create Collection Command](https://raw.githubusercontent.com/hansvn/vscode-instant-mongo/master/resources/images/command_create_coll.gif)
+![Insert Document Command](https://raw.githubusercontent.com/hansvn/vscode-instant-mongo/master/resources/images/command_insert_doc.gif)
 
 ## Requirements
 
@@ -42,6 +47,10 @@ This extension contributes the following settings:
 If you know about an issue that needs addressing, check the Github issues first and create one if it wasn't reported yet.
 
 ## Release Notes
+
+### [1.0.2] - 2020-04-24
+
+Adds more commands to the Database Explorer.
 
 ### [1.0.0] - 2020-04-24
 

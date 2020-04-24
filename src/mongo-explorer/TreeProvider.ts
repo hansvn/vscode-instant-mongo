@@ -62,6 +62,13 @@ export class TreeProvider implements vscode.TreeDataProvider<TreeItem> {
         this.createInspectors();
     }
 
+    public removeDbConnection(connection: DBConnection): void {
+        this.connections = this.connections.filter(conn => {
+            return !(conn.name === connection.name && conn.uri == connection.uri);
+        });
+        this.reCreateInspectors();
+    }
+
     public fireContentUpdated(): void {
         this._onDidChangeTreeData.fire();
     }

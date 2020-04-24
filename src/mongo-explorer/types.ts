@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { DbInspector } from './DbInspector';
+import { ObjectID } from 'mongodb';
 const { TreeNodeTypes } = require('mongodb-topology');
 
 export type DBConnection = {
@@ -20,7 +21,7 @@ export type InspectorElement = {
     type: string,
     values?: InspectorElement[],
     dbName?: string,
-    _id?: string,
+    _id?: ObjectID,
     collections?: Array<any>,
     indexes?: Array<any>,
     meta?: any,

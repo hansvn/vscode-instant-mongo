@@ -145,9 +145,12 @@ export class DbInspector {
                             item.collections = await this.normalizeChildren(item.collections);
                             item.commands = {
                                 createCollection: (name: string) => {
-                                    return this.client.db(item.dbName).createCollection(name).then(() => {
+                                    return this.client.db(item.name).createCollection(name).then(() => {
                                         this.inspectDB();
                                     });
+                                },
+                                dropDatabase: () => {
+                                    return this.client.db(item.name).dropDatabase();
                                 }
                             }
                             children.push(item);
@@ -168,6 +171,9 @@ export class DbInspector {
                                     doc.commands = {
                                         findOne: () => {
                                             return this.client.db(item.dbName).collection(item.name).findOne({ _id: doc._id });
+                                        },
+                                        deleteOne: () => {
+                                            return this.client.db(item.dbName).collection(item.name).deleteOne({ _id: doc._id });
                                         }
                                     }
                                     return doc;
@@ -192,6 +198,11 @@ export class DbInspector {
                                     commands: {
                                         insertOne: (document: object) => {
                                             return this.client.db(item.dbName).collection(item.name).insertOne(document).then(() => {
+                                                this.inspectDB();
+                                            });
+                                        },
+                                        dropCollection: () => {
+                                            return this.client.db(item.dbName).dropCollection(item.name).then(() => {
                                                 this.inspectDB();
                                             });
                                         }
