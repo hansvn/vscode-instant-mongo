@@ -4,6 +4,13 @@ All notable changes to the "instant-mongo" extension will be documented in this 
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
+## [1.0.2] - 2020-04-24
+
+- Fixed create collection in existing database command
+- Added removeDbConnection command for when the memory server is stopped
+- Added Images to README
+- Added Drop Database, Drop Collection and Delete Document commands
+
 ## [1.0.1] - 2020-04-24
 
 - Added package keyword `Explorer`
