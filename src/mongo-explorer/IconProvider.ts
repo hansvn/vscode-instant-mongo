@@ -3,8 +3,20 @@ import * as path from 'path';
 import { ExtendedTreeNodeTypes as TreeNodeTypes } from './types';
 
 export class IconProvider {
-    private static getFilePath(name: string, theme: string) {
-        return path.join(__dirname, '..', '..', 'resources', 'icons', theme, name);
+    private static resourcePath: string;
+
+    /**
+     * Initialize the provider with the extension context to set a 
+     * reference to the resources folder
+     * 
+     * @param {vscode.ExtensionContext} context 
+     */
+    public static initWithContext(context: vscode.ExtensionContext): void {
+        IconProvider.resourcePath = context.asAbsolutePath('resources');
+    }
+
+    private static getFilePath(name: string, theme: string): string {
+        return path.join(IconProvider.resourcePath, 'icons', theme, name);
     }
 
     private static getIconPath(icon: string): vscode.ThemeIcon {
