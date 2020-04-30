@@ -4,6 +4,10 @@ All notable changes to the "instant-mongo" extension will be documented in this 
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
+## [1.0.4] - 2020-05-01
+
+- Revert changes to v1.0.2 as webpack breaks some mongodb functionalities
+
 ## [1.0.3] - 2020-04-25
 
 - Configured webpack to bundle the extension before publish
