@@ -48,7 +48,7 @@ export class MongoServer {
 
     public constructor() {
         // emit all status changes
-        MongoServer._status.subscribe((status: string) => MongoServer.statusEventEmitter.emit(EVENTS.STATUS_CHANGE, status));
+        MongoServer._status.subscribe(status => MongoServer.statusEventEmitter.emit(EVENTS.STATUS_CHANGE, status));
     }
 
     private setStatus(status: string): void {

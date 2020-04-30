@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 
 import { InstantMongo } from './instant-mongo/instant-mongo';
-import { EVENTS as MongoServerEvents, MongoServer, SERVER_STATUS } from './instant-mongo/mongo-server/MongoServer';
 import { MongoExplorer } from './mongo-explorer/MongoExplorer';
+import { EVENTS as MongoServerEvents, MongoServer, SERVER_STATUS } from './instant-mongo/mongo-server/MongoServer';
 
 let instantMongo: InstantMongo;
 

@@ -5,7 +5,6 @@ import { TreeProvider } from './TreeProvider';
 import { DbInspector } from './DbInspector';
 import { DBConnection, ExtendedTreeNodeTypes, InspectorTreeItem, InspectorElement } from './types';
 import { ForbiddenChars, InputValidator } from './InputValidator';
-import { IconProvider } from './IconProvider';
 
 export enum COMMAND_NAMES {
     ADD_DB_CONN = 'mongoExplorer.addDbConnection',
@@ -32,9 +31,6 @@ export class MongoExplorer {
         this.subscribeCommands(context);
         this.registerCommands();
         this.readConfigConnections();
-
-        // init the Icon Provider
-        IconProvider.initWithContext(context);
 
         // register databases in tree provider
         this.treeProvider = new TreeProvider(this.dbConnections);
