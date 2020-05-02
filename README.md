@@ -39,7 +39,7 @@ This extension contributes the following settings:
 - `instantMongo.storageEngine`: available engines: [ 'devnull', 'ephemeralForTest', 'mmapv1', 'wiredTiger' ] (default: ephemeralForTest)
 - `instantMongo.replSet`: Replica set name (default: null)
 - `instantMongo.auth`: start `mongod` with '--auth' (default `mongod --noauth`)
-- `instantMongo.args`: any additional command line arguments for `mongod` `mongod` (ex. ['--notablescan'])
+- `instantMongo.args`: any additional command line arguments for `mongod` (ex. ['--notablescan'])
 - `instantMongo.connections`: objects containing a name and connection URI for a MongoDB
 
 ## Known Issues
